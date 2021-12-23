@@ -1,16 +1,17 @@
 package controller;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class MainController {
     @RequestMapping
     public String helloWorld(){
-        return "OpenPick Web Application";
+        return "sal";
     }
 
     @RequestMapping("/chat")
@@ -42,5 +43,14 @@ public class MainController {
     public String printHello(ModelMap model) {
         model.addAttribute("message", "Hello Spring MVC Framework!");
         return "hello";
+    }
+
+    @SpringBootApplication
+    public static class MainStart {
+
+        public static void main(String[] args) {
+            SpringApplication.run(MainStart.class, args);
+        }
+
     }
 }
