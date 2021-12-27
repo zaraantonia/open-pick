@@ -1,7 +1,11 @@
 package com.softwareeng.openpick.user;
 
 
+import com.softwareeng.openpick.project.Project;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +28,9 @@ public class User {
     private String lastName;
 
     private boolean enabled;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
 
     public Integer getId() {
         return id;
