@@ -29,8 +29,8 @@ public class User {
 
     private boolean enabled;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projects = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.DETACH, orphanRemoval = false)
+    private List<Project> projects;
 
     public Integer getId() {
         return id;
@@ -89,5 +89,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

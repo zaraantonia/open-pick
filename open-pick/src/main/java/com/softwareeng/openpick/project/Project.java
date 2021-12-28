@@ -18,6 +18,9 @@ public class Project {
     @Column(nullable = false, length = 25)
     private String title;
 
+    @Column(nullable = false, length = 255)
+    private String description;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
@@ -57,5 +60,13 @@ public class Project {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

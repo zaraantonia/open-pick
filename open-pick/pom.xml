@@ -60,6 +60,19 @@
             <artifactId>webjars-locator-core</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>collaboration-engine</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
