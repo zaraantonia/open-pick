@@ -22,7 +22,7 @@ public class UserService {
         return (List<User>) repo.findAll();
     }
 
-    public void save(User user, Integer oldId){
+    public void save(User user){
         repo.save(user);
     }
 

@@ -39,10 +39,12 @@ public class UserController {
         user.setRole("USER");
         //User userDB = service.get(user.getId()); //nu am reusit sa fac update:(
         service.save(user);
+        return "redirect:/users";
+    }
 
     @RequestMapping(value = "/users/save/{oldId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
-        service.save(user, Integer.parseInt(oldId));
+       //service.save(user, Integer.parseInt(oldId));
 
         ra.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/users";
@@ -88,9 +90,10 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRole("USER");
         user.setEnabled(true);
-          service.save(user);
+        service.save(user);
 
         return "register_success";
+    }
 
     @GetMapping("/users/{id}")
     public String viewProfileOfUser(Model model, @PathVariable("id") Integer id, RedirectAttributes ra) {

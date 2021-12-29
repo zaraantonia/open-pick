@@ -27,13 +27,13 @@ public class Task {
     @Column(name = "description", length = 255)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "assigner_id", referencedColumnName = "id")
-    private User assigner;
-
-    @ManyToOne
-    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
-    private User assignee;
+//    @ManyToOne
+//    @JoinColumn(name = "assigner_id", referencedColumnName = "id")
+//    private User assigner;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
+//    private User assignee;
 
 
     public void setId(Integer id) {
@@ -68,21 +68,21 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public User getAssigner() {
-        return assigner;
-    }
-
-    public void setAssigner(User assigner) {
-        this.assigner = assigner;
-    }
-
-    public User getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(User assignee) {
-        this.assignee = assignee;
-    }
+//    public User getAssigner() {
+//        return assigner;
+//    }
+//
+//    public void setAssigner(User assigner) {
+//        this.assigner = assigner;
+//    }
+//
+//    public User getAssignee() {
+//        return assignee;
+//    }
+//
+//    public void setAssignee(User assignee) {
+//        this.assignee = assignee;
+//    }
 
     public String getDescription() {
         return description;

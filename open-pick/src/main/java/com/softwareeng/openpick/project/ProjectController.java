@@ -1,11 +1,11 @@
 package com.softwareeng.openpick.project;
 
-import com.softwareeng.openpick.OpenPickApplication;
-import com.softwareeng.openpick.user.NotFoundException;
+import com.softwareeng.openpick.exception.NotFoundException;
 import com.softwareeng.openpick.user.User;
 import com.softwareeng.openpick.user.UserNotFoundException;
 import com.softwareeng.openpick.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,22 +60,34 @@ public class ProjectController {
     }
 
     @GetMapping("/users/{user_id}/projects/new")
-    public String addNewProjectToUser(){
- //       try {
-//            model.addAttribute("currentUser", userService.get(userId));
-//            model.addAttribute("project", new Project());
-//            model.addAttribute("pageTitle", "Add New User");
+    public String addNewProjectToUser(@PathVariable("user_id") Integer userId, Model model){
+        try {
+            User currentUser = userService.get(userId);
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("projectt", new Project());
             return "project_form";
-//        } catch (UserNotFoundException e) {
-//            return "/users/{user_id}/projects";
-//        }
+        } catch (UserNotFoundException e) {
+            return "/users/{user_id}";
+        }
     }
 
     @PostMapping("/users/{user_id}/projects/save")
-    public String saveProject(Project project, RedirectAttributes ra){
-        //TODO
-        return "redirect:/projects";
+    public String saveProject(@PathVariable("user_id") Integer userId, Project projectt, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
+        projectt.setOwner(userService.get(userId));
+        Project newProject = new Project(projectt.getTitle(), projectt.getDescription(), userService.get(userId));
+        service.save(newProject);
+        Integer pid = newProject.getId();
+        service.saveInUsersProjects(pid, userId);
+        return "redirect:/users/{user_id}";
     }
 
+    @GetMapping("/users/{user_id}/projects/{project_id}/delete")
+    public String deleteUser(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, RedirectAttributes ra) {
+        service.deleteProjectFromUsersProjects(projectId);
+        service.delete(projectId);
+
+        ra.addFlashAttribute("message","User has been deleted succesfully");
+        return "redirect:/users/{user_id}";
+    }
 
 }

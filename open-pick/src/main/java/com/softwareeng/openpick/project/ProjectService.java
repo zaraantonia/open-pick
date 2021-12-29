@@ -1,12 +1,9 @@
 package com.softwareeng.openpick.project;
 
-import com.softwareeng.openpick.user.NotFoundException;
+import com.softwareeng.openpick.exception.NotFoundException;
 import com.softwareeng.openpick.user.User;
-import com.softwareeng.openpick.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 //import org.springframework.data.repository.query.Param;
 //import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +38,21 @@ public class ProjectService {
 
     public void updateUserIdInProject(Integer oldId, Integer newId) {
         repo.updateUserIdInProject(oldId,newId);
+    }
+
+    public void save(Project project) {
+        repo.save(project);
+    }
+
+    public void saveInUsersProjects(Integer pid, Integer uid) {
+        repo.saveInUsersProjects(pid, uid);
+    }
+
+    public void delete(Integer id) {
+        repo.delete(repo.getById(id));
+    }
+
+    public void deleteProjectFromUsersProjects(Integer projectId) {
+        repo.deleteProjectsFromUserProjects(projectId);
     }
 }

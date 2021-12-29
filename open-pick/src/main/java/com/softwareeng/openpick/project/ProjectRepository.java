@@ -1,5 +1,6 @@
 package com.softwareeng.openpick.project;
 
+import com.softwareeng.openpick.user.User;
 import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,4 +26,14 @@ public interface ProjectRepository extends JpaRepository<Project,Integer> {
     @Modifying
     @Query(value = "UPDATE projects SET user_id = :newId WHERE user_id = :oldId", nativeQuery = true)
     public void updateUserIdInProject(Integer oldId, Integer newId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO users_projects (user_id, projects_id) VALUES (:userId, :projectId)", nativeQuery = true)
+    void saveInUsersProjects(@Param("projectId") Integer projectId, @Param("userId") Integer userId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM users_projects WHERE projects_id = :projectId", nativeQuery = true)
+    void deleteProjectsFromUserProjects(@Param("projectId") Integer projectId);
 }

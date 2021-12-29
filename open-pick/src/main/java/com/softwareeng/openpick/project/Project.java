@@ -25,8 +25,18 @@ public class Project {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks = new ArrayList<>();
+    public Project(String title, String description, User user) {
+        this.title = title;
+        this.description = description;
+        this.owner = user;
+    }
+
+    public Project() {
+
+    }
+
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Task> tasks = new ArrayList<>();
 
 
 
@@ -54,13 +64,13 @@ public class Project {
         this.owner = owner;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+//    public List<Task> getTasks() {
+//        return tasks;
+//    }
+//
+//    public void setTasks(List<Task> tasks) {
+//        this.tasks = tasks;
+//    }
 
     public String getDescription() {
         return description;
@@ -68,5 +78,15 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", owner=" + owner.getUsername() +
+                '}';
     }
 }

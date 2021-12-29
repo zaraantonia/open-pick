@@ -1,7 +1,10 @@
 package com.softwareeng.openpick.user;
 
 
+import com.softwareeng.openpick.project.Project;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,7 +19,7 @@ public class User {
     @Column(length = 100, nullable = false) //name is default here
     private String password;
 
-    @Column(length = 45, nullable = false, name = "username")
+    @Column(length = 45, nullable = false)
     private  String username;
 
     @Column(length=12,nullable = false)
@@ -33,7 +36,7 @@ public class User {
         this.role = role;
     }
 
-    @OneToMany(cascade = CascadeType.DETACH, orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects;
 
 
@@ -93,6 +96,12 @@ public class User {
     }
 
     public void setProjects(List<Project> projects) {
-        this.projects = projects;
+        if(this.projects == null){
+            this.projects = projects;
+        }
+        else{
+            this.projects.clear();
+            this.projects.addAll(projects);
+        }
     }
 }
