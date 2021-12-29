@@ -2,6 +2,7 @@ package com.softwareeng.openpick.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,9 @@ public class UserController {
     }
 
     @PostMapping("/users/save")
-    public String saveUser(User user, RedirectAttributes ra) {
+    public String saveUser(User user, RedirectAttributes ra) throws UserNotFoundException {
+        user.setRole("USER");
+        //User userDB = service.get(user.getId()); //nu am reusit sa fac update:(
         service.save(user);
         ra.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/users";
@@ -59,5 +62,24 @@ public class UserController {
             ra.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/users";
+    }
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+
+        return "signup_form";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRole("USER");
+        user.setEnabled(true);
+          service.save(user);
+
+        return "register_success";
     }
 }

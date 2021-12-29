@@ -1,16 +1,11 @@
 package com.softwareeng.openpick.user;
 
 
-import com.softwareeng.openpick.project.Project;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,19 +13,24 @@ public class User {
     @Column(nullable = false, unique = true, length = 45)
     private String email;
 
-    @Column(length = 15, nullable = false) //name is default here
+    @Column(length = 100, nullable = false) //name is default here
     private String password;
 
-    @Column(length = 45, nullable = false, name = "first_name")
-    private  String firstName;
+    @Column(length = 45, nullable = false, name = "username")
+    private  String username;
 
-    @Column(length = 45, nullable = false, name = "last_name")
-    private String lastName;
+    @Column(length=12,nullable = false)
+    private String role;
 
     private boolean enabled;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projects = new ArrayList<>();
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Integer getId() {
         return id;
@@ -56,20 +56,12 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -78,8 +70,8 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 

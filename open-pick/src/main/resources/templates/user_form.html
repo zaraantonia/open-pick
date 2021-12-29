@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>[[${pageTitle}]]</title>
@@ -8,9 +8,10 @@
 <body>
 <div class="container-fluid">
     <div class="text-center"><h2>[[${pageTitle}]]</h2></div>
+    <input type="hidden" th:field="*{id}">
     <!--<input type="hidden" th:field="*{id}" /> -->
     <form th:action="@{/users/save}" method="post" th:object="${user}"
-        style="max-width: 500px; margin: 0 auto;">
+          style="max-width: 500px; margin: 0 auto;">
         <div class="border border-secondary rounded p-3">
             <!-- code for one row of input :( -->
             <div class="form-group row">
@@ -21,16 +22,9 @@
             </div>
             <!-- code for one row of input :( -->
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">First Name</label>
+                <label class="col-sm-4 col-form-label">Username</label>
                 <div class="col-sm-8">
-                    <input type="text" th:field="*{firstName}" class="form-control" required minlength="1" maxlength="45" />
-                </div>
-            </div>
-            <!-- code for one row of input :( -->
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Last Name</label>
-                <div class="col-sm-8">
-                    <input type="text" th:field="*{lastName}" class="form-control" required minlength="1" maxlength="45"/>
+                    <input type="text" th:field="*{username}" class="form-control" required minlength="1" maxlength="45" />
                 </div>
             </div>
             <!-- code for one row of input :( -->
@@ -55,12 +49,10 @@
         </div>
     </form>
 </div>
-
 <script type="text/javascript">
     function cancelForm() {
         window.location = "[[@{/users}]]";
     }
 </script>
-
 </body>
 </html>

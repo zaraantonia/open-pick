@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Manage Users</title>
@@ -23,8 +23,7 @@
             <tr>
                 <th>ID</th>
                 <th>E-mail</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Username</th>
                 <th>Enabled</th>
                 <th></th>
             </tr>
@@ -34,8 +33,7 @@
             <tr>
                 <td>[[${user.id}]]</td>
                 <td>[[${user.email}]]</td>
-                <td>[[${user.firstName}]]</td>
-                <td>[[${user.lastName}]]</td>
+                <td>[[${user.username}]]</td>
                 <td>[[${user.enabled}]]</td>
                 <td>
                     <a class="h4 mr-3" th:href="@{'/users/edit/' + ${user.id}}">Edit</a>
