@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container-fluid text-center">
+
+    <!--succesful pop up -->
+    <div th:if="${message}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+
+    <div>
+        <h3>[[${currentUser.firstName} + ' ' + ${currentUser.LastName}]]</h3>
+    </div>
+
+    <div>
+        <h4>[[${currentUser.email}]]</h4>
+    </div>
+
+    <div class="m-2">
+        <a class="h3" th:href="@{'/users/' + ${currentUser.id} + '/projects/new'}">Add New Project</a>
+    </div>
+
+    <div>
+        <h5>Projects: </h5>
+    </div>
+
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="project : ${currentUser.projects}">
+                <tr>
+                    <td>[[${project.title}]]</td>
+                    <td>[[${project.description}]]</td>
+                    <td>
+                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id}}" >Details</a>
+                    </td>
+                    <td>
+                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/delete'}" >Delete</a>
+                    </td>
+                    <td>
+                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/edit'}" >Edit</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

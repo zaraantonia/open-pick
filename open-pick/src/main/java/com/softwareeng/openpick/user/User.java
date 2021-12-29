@@ -24,6 +24,7 @@ public class User {
 
     private boolean enabled;
 
+
     public String getRole() {
         return role;
     }
@@ -31,6 +32,10 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @OneToMany(cascade = CascadeType.DETACH, orphanRemoval = false)
+    private List<Project> projects;
+
 
     public Integer getId() {
         return id;
@@ -81,5 +86,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }
