@@ -4,6 +4,7 @@ package com.softwareeng.openpick.user;
 import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,17 @@ public class UserController {
         return "user_form";
     }
 
+  //needs attention
+    @PostMapping("/users/save")
+    public String saveUser(User user, RedirectAttributes ra) throws UserNotFoundException {
+        user.setRole("USER");
+        //User userDB = service.get(user.getId()); //nu am reusit sa fac update:(
+        service.save(user);
+
     @RequestMapping(value = "/users/save/{oldId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
         service.save(user, Integer.parseInt(oldId));
+
         ra.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/users";
     }
@@ -63,6 +72,25 @@ public class UserController {
         }
         return "redirect:/users";
     }
+
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new User());
+
+        return "signup_form";
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRole("USER");
+        user.setEnabled(true);
+          service.save(user);
+
+        return "register_success";
 
     @GetMapping("/users/{id}")
     public String viewProfileOfUser(Model model, @PathVariable("id") Integer id, RedirectAttributes ra) {
