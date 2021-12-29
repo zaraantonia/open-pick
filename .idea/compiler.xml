@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="open-pick" target="11" />
+      <module name="open-pick" target="1.6" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
