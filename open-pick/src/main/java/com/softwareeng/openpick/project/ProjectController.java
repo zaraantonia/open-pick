@@ -75,7 +75,7 @@ public class ProjectController {
     @GetMapping("/users/{user_id}/projects/{project_id}/edit")
     public String showEditForm(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Model model, RedirectAttributes ra) {
         try {
-            Project project = service.get(userId);
+            Project project = service.get(projectId);
             model.addAttribute("ourProject", project);
             model.addAttribute("pageTitle", "Edit User (ID: " + userId + ")");
             model.addAttribute("userId", userId.toString());
@@ -85,6 +85,17 @@ public class ProjectController {
             ra.addFlashAttribute("message", "The .");
             return "redirect:/users";
         }
+    }
+
+    @RequestMapping("/users/{user_id}/projects/save")
+    public String saveProject(@PathVariable("user_id") Integer userId, Project ourProject, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
+        ourProject.setOwner(userService.get(userId));
+        System.out.println("TITLE " + ourProject.getTitle());
+        System.out.println("OWNER " + ourProject.getOwner().getUsername());
+        service.save(ourProject);
+
+        ra.addFlashAttribute("message", "The project has been saved successfully.");
+        return "redirect:/users/{user_id}";
     }
 
     @RequestMapping("/users/{user_id}/projects/{project_id}/save")
