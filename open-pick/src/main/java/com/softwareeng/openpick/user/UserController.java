@@ -44,7 +44,11 @@ public class UserController {
 
     @RequestMapping(value = "/users/save/{oldId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
-       //service.save(user, Integer.parseInt(oldId));
+        System.out.println("USERNAME " + user.getUsername());
+        System.out.println("OLD ID" + Integer.parseInt(oldId));
+        user.setId(Integer.parseInt(oldId));
+        user.setRole("USER");
+        service.save(user);
 
         ra.addFlashAttribute("message", "The user has been saved successfully.");
         return "redirect:/users";

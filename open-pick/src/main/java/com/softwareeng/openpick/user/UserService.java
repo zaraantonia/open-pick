@@ -30,8 +30,8 @@ public class UserService {
         Optional<User> result = repo.findById(id);
         if (result.isPresent()) {
             User currentUser = result.get();
-            List<Project> currentProjects =  projectService.getByUserId(currentUser.getId());
-            currentUser.setProjects(currentProjects);
+            //List<Project> currentProjects =  projectService.getByUserId(currentUser.getId());
+            //currentUser.setProjects(currentProjects);
             return currentUser;
         }
         throw new UserNotFoundException("Could not find any users with ID " + id);

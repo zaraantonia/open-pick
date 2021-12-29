@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -71,13 +72,29 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/users/{user_id}/projects/save")
-    public String saveProject(@PathVariable("user_id") Integer userId, Project projectt, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
-        projectt.setOwner(userService.get(userId));
-        Project newProject = new Project(projectt.getTitle(), projectt.getDescription(), userService.get(userId));
-        service.save(newProject);
-        Integer pid = newProject.getId();
-        service.saveInUsersProjects(pid, userId);
+    @GetMapping("/users/{user_id}/projects/{project_id}/edit")
+    public String showEditForm(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Model model, RedirectAttributes ra) {
+        try {
+            Project project = service.get(userId);
+            model.addAttribute("ourProject", project);
+            model.addAttribute("pageTitle", "Edit User (ID: " + userId + ")");
+            model.addAttribute("userId", userId.toString());
+            model.addAttribute("projectId", projectId.toString());
+            return "project_form_edit";
+        } catch (NotFoundException e) {
+            ra.addFlashAttribute("message", "The .");
+            return "redirect:/users";
+        }
+    }
+
+    @RequestMapping("/users/{user_id}/projects/{project_id}/save")
+    public String saveProject(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Project ourProject, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
+        ourProject.setOwner(userService.get(userId));
+        System.out.println("TITLE " + ourProject.getTitle());
+        System.out.println("OWNER " + ourProject.getOwner().getUsername());
+        service.save(ourProject);
+
+        ra.addFlashAttribute("message", "The project has been saved successfully.");
         return "redirect:/users/{user_id}";
     }
 

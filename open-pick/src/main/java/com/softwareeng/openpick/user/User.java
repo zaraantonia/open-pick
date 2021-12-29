@@ -36,7 +36,7 @@ public class User {
         this.role = role;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Project> projects;
 
 

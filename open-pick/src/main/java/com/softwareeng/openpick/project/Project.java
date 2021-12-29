@@ -21,7 +21,7 @@ public class Project {
     @Column(nullable = false, length = 255)
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
