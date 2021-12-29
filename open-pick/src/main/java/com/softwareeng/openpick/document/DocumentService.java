@@ -1,11 +1,11 @@
-package com.softwareeng.openpick.project;
+package com.softwareeng.openpick.document;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProjectService {
+public class DocumentService {
 
     @Autowired
-    private ProjectRepository repo;
+    private DocumentRepository repo;
 }

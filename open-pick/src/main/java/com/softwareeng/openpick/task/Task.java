@@ -1,6 +1,5 @@
 package com.softwareeng.openpick.task;
 
-import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.user.User;
 
 import javax.persistence.*;
