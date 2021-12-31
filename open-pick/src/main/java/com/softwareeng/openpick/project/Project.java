@@ -35,8 +35,8 @@ public class Project {
 
     }
 
-    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Task> tasks = new ArrayList<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Task> tasks = new ArrayList<>();
 
 
 
@@ -64,13 +64,13 @@ public class Project {
         this.owner = owner;
     }
 
-//    public List<Task> getTasks() {
-//        return tasks;
-//    }
-//
-//    public void setTasks(List<Task> tasks) {
-//        this.tasks = tasks;
-//    }
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 
     public String getDescription() {
         return description;

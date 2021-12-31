@@ -55,7 +55,7 @@ public class ProjectController {
             model.addAttribute("currentUser", userService.get(userId));
             return "project_view";
         }
-        catch (NotFoundException | UserNotFoundException e) {
+        catch (NotFoundException e) {
             return "/users/{user_id}";
         }
     }
@@ -67,17 +67,17 @@ public class ProjectController {
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("projectt", new Project());
             return "project_form";
-        } catch (UserNotFoundException e) {
+        } catch (NotFoundException e) {
             return "/users/{user_id}";
         }
     }
 
     @GetMapping("/users/{user_id}/projects/{project_id}/edit")
-    public String showEditForm(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Model model, RedirectAttributes ra) {
+    public String showEditFormProject(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Model model, RedirectAttributes ra) {
         try {
             Project project = service.get(projectId);
             model.addAttribute("ourProject", project);
-            model.addAttribute("pageTitle", "Edit User (ID: " + userId + ")");
+            model.addAttribute("pageTitle", "Edit Project");
             model.addAttribute("userId", userId.toString());
             model.addAttribute("projectId", projectId.toString());
             return "project_form_edit";
@@ -90,8 +90,6 @@ public class ProjectController {
     @RequestMapping("/users/{user_id}/projects/save")
     public String saveProject(@PathVariable("user_id") Integer userId, Project ourProject, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
         ourProject.setOwner(userService.get(userId));
-        System.out.println("TITLE " + ourProject.getTitle());
-        System.out.println("OWNER " + ourProject.getOwner().getUsername());
         service.save(ourProject);
 
         ra.addFlashAttribute("message", "The project has been saved successfully.");
@@ -101,8 +99,6 @@ public class ProjectController {
     @RequestMapping("/users/{user_id}/projects/{project_id}/save")
     public String saveProject(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Project ourProject, RedirectAttributes ra, Model model) throws UserNotFoundException, NotFoundException {
         ourProject.setOwner(userService.get(userId));
-        System.out.println("TITLE " + ourProject.getTitle());
-        System.out.println("OWNER " + ourProject.getOwner().getUsername());
         service.save(ourProject);
 
         ra.addFlashAttribute("message", "The project has been saved successfully.");

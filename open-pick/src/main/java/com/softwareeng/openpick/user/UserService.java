@@ -1,5 +1,6 @@
 package com.softwareeng.openpick.user;
 
+import com.softwareeng.openpick.exception.NotFoundException;
 import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.project.ProjectRepository;
 import com.softwareeng.openpick.project.ProjectService;
@@ -26,7 +27,7 @@ public class UserService {
         repo.save(user);
     }
 
-    public User get(Integer id) throws UserNotFoundException {
+    public User get(Integer id) throws NotFoundException {
         Optional<User> result = repo.findById(id);
         if (result.isPresent()) {
             User currentUser = result.get();
@@ -34,13 +35,13 @@ public class UserService {
             //currentUser.setProjects(currentProjects);
             return currentUser;
         }
-        throw new UserNotFoundException("Could not find any users with ID " + id);
+        throw new NotFoundException("Could not find any users with ID " + id);
     }
 
-    public void delete(Integer id) throws UserNotFoundException {
+    public void delete(Integer id) throws NotFoundException {
         Long count = repo.countById(id);
         if(count == null | count == 0){
-            throw new UserNotFoundException("Could not find user.");
+            throw new NotFoundException("Could not find user.");
         }
         repo.deleteById(id);
     }
