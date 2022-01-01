@@ -1,14 +1,13 @@
 package com.softwareeng.openpick.document;
 
+import com.softwareeng.openpick.user.User;
+import com.softwareeng.openpick.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -68,34 +67,43 @@ public class DocumentController {
         outputStream.write(document.getContent());
         outputStream.close();
     }
+    @GetMapping("/delete/{id}")
+    public String deleteDocument(@PathVariable("id") Integer id, RedirectAttributes ra) throws UserNotFoundException {
+        Long count = repo.countById(id);
+        if(count == null | count == 0){
+            throw new UserNotFoundException("Could not find document.");
+        }
+        repo.deleteById(id);
+        ra.addFlashAttribute("message","File has been deleted succesfully");
+        return "redirect:/documents";
+    }
 
+    @RequestMapping(value = "/uploadEdit/{oldId}", method = RequestMethod.POST)
+    public String editDocument(@PathVariable("oldId") Integer oldId, @RequestParam("document") MultipartFile multipartFile, RedirectAttributes redirectAttributes) {
+        try {
+            Optional<Document> result =repo.findById(oldId);
+            if(!result.isPresent()){
+                throw new Exception("Could not find document with ID:"+oldId);
+            }
+            Document document = result.get();
+            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            document.setContent(multipartFile.getBytes());
+            document.setSize(multipartFile.getSize());
+            document.setUploadTime(new Date());
+            document.setTitle(filename);
+            repo.save(document);
+            redirectAttributes.addFlashAttribute("message","The file has been edited successfully.");
+            return "redirect:/documents";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "The .");
+            return "redirect:/documents";
+        }
+    }
 
+    @GetMapping("/edit/{id}")
+    public String editDoc(@PathVariable("id") Integer id,Model model) {
+        model.addAttribute("oldId", id.toString());
+            return "doc_form";
 
-//    @GetMapping("/projects/new")
-//    public String showNewProjectForm(Model model){
-//        //TODO new project form
-//        return "project_form";
-//    }
-//
-//    @GetMapping("/projects/{id}")
-//    public String showProject(@PathVariable("id") Integer id, Model model, RedirectAttributes ra){
-//        //TODO
-//        return "/projects/{id}";
-//    }
-//
-//    @GetMapping("/users/{user_id}/projects/")
-//    public String showProjectsFromUser(@PathVariable("user_id") Integer id, Model model, RedirectAttributes ra){
-//        //TODO
-//        return "/users/{user_id}/projects/";
-//    }
-//
-//    //@GetMapping("/users/{user_id}/projects/")
-//
-//    @PostMapping("/users/{user_id}/projects/save")
-//    public String saveProject(Document document, RedirectAttributes ra){
-//        //TODO
-//        return "redirect:/projects";
-//    }
-
-
+    }
 }

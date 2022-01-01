@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+
+</head>
+<body>
+<div class="text-center"><h2>Edit document</h2></div>
+<input type="hidden" th:field="*{oldId}">
+<form th:action = "@{'/uploadEdit/' + ${oldId}}" method="post"
+      enctype="multipart/form-data"
+      style="max-width: 600px; margin: 0 auto"
+>
+    <div class="border rounded m-3">
+        <h2>Upload Your files:</h2>
+        <p>
+            <input type = "file" name = "document" required />
+        </p>
+        <p>
+            <input type="submit" value="Upload" class="btn btn-primary">
+        </p>
+    </div>
+
+</form>
+
+</div>
+</body>
+</html>

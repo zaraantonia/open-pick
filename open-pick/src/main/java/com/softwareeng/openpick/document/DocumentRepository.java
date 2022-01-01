@@ -13,4 +13,10 @@ public interface DocumentRepository extends JpaRepository<Document,Integer> {
     @Query("SELECT new Document (d.id, d.title, d.size) from Document d ORDER BY d.uploadTime DESC")
     @Override
     List<Document> findAll();
+    @Override
+    void deleteById(Integer id);
+
+    @Query("select count(d) from Document d where d.id = ?1")
+    public Long countById(Integer id);
+
 }

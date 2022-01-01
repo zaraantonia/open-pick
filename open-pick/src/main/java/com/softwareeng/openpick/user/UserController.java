@@ -65,7 +65,7 @@ public class UserController {
             return "user_form";
         } catch (UserNotFoundException e) {
             ra.addFlashAttribute("message", "The .");
-            return "redirect:/users";
+            return "redirect:/documents";
         }
     }
 
@@ -77,7 +77,7 @@ public class UserController {
         } catch (UserNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
         }
-        return "redirect:/users";
+        return "redirect:/documents";
     }
 
 
