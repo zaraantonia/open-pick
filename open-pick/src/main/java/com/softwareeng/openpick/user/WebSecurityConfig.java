@@ -17,6 +17,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -44,18 +47,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                //.antMatchers("users/edit/**","users/delete/**").hasRole("ADMIN")
                 .antMatchers("/users").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().usernameParameter("username")
-                            .defaultSuccessUrl("/users")
-                            .permitAll()
+                .successHandler(loginSuccessHandler)
+                .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll()
-//                .formLogin().permitAll()
-//                .and()
-//                .logout().permitAll()
         ;
     }
 }

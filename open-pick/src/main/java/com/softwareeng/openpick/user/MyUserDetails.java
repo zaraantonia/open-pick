@@ -51,5 +51,12 @@ public class MyUserDetails implements UserDetails {
         return true;
     }
 
+    public boolean hasRole(String role){
+        if(role.equals(user.getRole())){
+            return true;
+        }
+        return false;
+    }
+
 }
 

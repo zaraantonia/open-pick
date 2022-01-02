@@ -1,6 +1,6 @@
 package com.softwareeng.openpick.document;
 
-import com.softwareeng.openpick.user.User;
+import com.softwareeng.openpick.project.Project;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,13 +16,9 @@ public class Document {
     @Column(nullable = false, length = 512,unique=true)
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User owner;
-//
-//    @OneToOne
-//    @JoinColumn(name = "project_id", referencedColumnName = "id")
-//    private Project project;
+    @ManyToOne
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    private Project project;
 
     @Column (nullable = false)
     private long size;
@@ -80,5 +76,13 @@ public class Document {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

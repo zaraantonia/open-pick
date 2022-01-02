@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+</head>
+<body>
+
+<!-- header -->
+<div class="header">
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>OPEN<span>PICK</span></h1>
+        </div>
+
+        <ul class="navigation">
+            <a href="/projects/"><li>Projects</li></a>
+            <a th:href="@{'/users/' + ${loggedInUserId}}"><li>My Profile</li></a>
+            <a href="/about"><li>About</li></a>
+            <a href="/logout"><li>Logout</li></a>
+        </ul>
+
+    </div>
+</div>
+
+<div style="color: white">.</div>
+
+<div class="container-fluid text-center">
+
+    <div>
+        <h3>[[${currentProject.title}]]</h3>
+    </div>
+
+    <div>
+        <h4>[[${currentProject.description}]]</h4>
+    </div>
+
+    <div class="m-2">
+        <a class="h3" th:href="@{'/users/' + ${currentUser.id} + '/projects/'  + ${currentProject.id} + '/newtask'}">Add New Task</a>
+    </div>
+
+    <div>
+        <h5>Tasks: </h5>
+    </div>
+
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>Deadline</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="task : ${currentProject.tasks}">
+                <tr>
+                    <td>[[${task.title}]]</td>
+                    <td>[[${task.description}]]</td>
+                    <td>[[${task.startDate}]]</td>
+                    <td>[[${task.deadline}]]</td>
+                    <td>
+                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${currentProject.id} + '/deletetask/' + ${task.id}}" >Delete</a>
+                    </td>
+                    <td>
+                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${currentProject.id} + '/edittask/' + ${task.id}}" >Edit</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class = "row border rounded m-3 p-3">
+    <th:block th:each = "doc : ${currentProject.documents}">
+        <div class = "col">
+            <div>
+                <img th:src="@{/images/document.png}" width="50"/>
+            </div>
+            <div>
+                <a th:href="@{'/download?id='+ ${doc.id}} "style="color:purple">[[${doc.title}]]</a>
+            </div>
+            <div>
+                ([[${#numbers.formatInteger(doc.size,4,'COMMA')}]] bytes)
+            </div>
+            <div>
+                <a th:href="@{'/edit/'  + ${doc.id} }" style="color:rebeccapurple" >edit</a>
+            </div>
+            <div>
+                <a th:href="@{'/delete/'  + ${doc.id}} " style="color:mediumpurple" >delete</a>
+            </div>
+
+
+        </div>
+    </th:block>
+</div>
+
+<form th:action = "@{'/upload/' + ${currentProject.id}}" method = "post"
+      enctype="multipart/form-data"
+      style="max-width: 600px; margin: 0 auto"
+>
+    <div class="border rounded m-3">
+        <h2>Upload Your files:</h2>
+        <p>
+            <input type = "file" name = "document" required />
+        </p>
+        <p>
+            <input type="submit" value="Upload" class="btn btn-primary">
+        </p>
+    </div>
+
+</form>
+
+</body>
+</html>

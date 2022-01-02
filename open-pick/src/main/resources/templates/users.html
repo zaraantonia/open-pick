@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Users</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 </head>
 <body>
+
+<!-- header -->
+<div class="header">
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>OPEN<span>PICK</span></h1>
+        </div>
+
+        <ul class="navigation">
+            <a href="/projects/"><li>Projects</li></a>
+            <a href="/users"><li>Users</li></a>
+            <a href="/about"><li>About</li></a>
+            <a href="/logout"><li>Logout</li></a>
+        </ul>
+
+    </div>
+</div>
+
+<div style="color: white">.</div>
+
 <div class="container-fluid text-center">
     <div><h2>Manage Users</h2></div>
-    <div class="m-2">
-        <a class="h3" th:href="@{/users/new}">Add New User</a>
-    </div>
 
     <!--succesful pop up -->
     <div th:if="${message}" class="alert alert-success text-center">
@@ -36,8 +54,8 @@
                 <td>[[${user.username}]]</td>
                 <td>[[${user.enabled}]]</td>
                 <td>
-                    <a clas="h4 mr-3" th:href="@{'/users/' + ${user.id}}">Profile</a>
-                    <a class="h4 mr-3" th:href="@{'/users/edit/' + ${user.id}}">Edit</a>
+<!--                    <a class="h4 mr-3" th:href="@{'/users/' + ${user.id}}">Profile</a>-->
+<!--                    <a class="h4 mr-3" th:href="@{'/users/edit/' + ${user.id}}">Edit</a>-->
                     <a class="h4" th:href="@{'users/delete/' + ${user.id}}">Delete</a>
                 </td>
             </tr>

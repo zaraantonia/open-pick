@@ -2,12 +2,33 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>${pageTitle}</title>
+    <title>Add New Task</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 </head>
 <body>
+
+<!-- header -->
+<div class="header">
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>OPEN<span>PICK</span></h1>
+        </div>
+
+        <ul class="navigation">
+            <a href="/projects/"><li>Projects</li></a>
+            <a th:href="@{'/users/' + ${currentUser.id}}"><li>My Profile</li></a>
+            <a href="/about"><li>About</li></a>
+            <a href="/logout"><li>Logout</li></a>
+        </ul>
+
+    </div>
+</div>
+
+<div style="color: white">.</div>
+
 <div class="container-fluid">
-    <div class="text-center"><h2>${pageTitle}</h2></div>
+    <div class="text-center"><h2>Add New Task</h2></div>
 
 
     <form th:action="@{'/users/' + ${currentUser.id} + '/projects/' + ${currentProject.id} + '/savetask'}" method="post" th:object="${task}"

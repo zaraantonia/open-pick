@@ -5,14 +5,16 @@ import com.softwareeng.openpick.user.User;
 import com.softwareeng.openpick.user.UserNotFoundException;
 import com.softwareeng.openpick.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -23,28 +25,27 @@ public class ProjectController {
     @Autowired
     private UserService userService;
 
-    //you can only add projects from the my projects menu,
-    //not from the all projects menu
-
-    //same with tasks, from myprojects only
-
     @GetMapping("/projects")
     public String showAllProjects(Model model){
-        //TODO page that will display all the projects
-        return "projects";
+        List<Project> allProjects = service.findAll();
+        model.addAttribute("allProjects", allProjects);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+
+            User loggedInUser = userService.findByUsername(((UserDetails)principal).getUsername());
+            model.addAttribute("loggedInUserId", loggedInUser.getId().toString());
+
+            if(loggedInUser.getRole().equals("ADMIN")){
+                return "all_projects_admin";
+            }
+
+        } else {
+            model.addAttribute("loggedInUserId", "");
+        }
+        return "all_projects";
     }
 
-    @GetMapping("/projects/new")
-    public String showNewProjectForm(Model model){
-        //TODO new project form
-        return "project_form";
-    }
-
-    @GetMapping("/projects/{id}")
-    public String showProject(@PathVariable("id") Integer id, Model model, RedirectAttributes ra){
-        //TODO
-        return "/projects/{id}";
-    }
 
     @GetMapping("/users/{user_id}/projects/{project_id}")
     public String showProjectsFromUser(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, Model model, RedirectAttributes ra){
@@ -53,7 +54,24 @@ public class ProjectController {
             model.addAttribute("currentProject",project);
             if(project.getTitle() == null) throw new NotFoundException("ew");
             model.addAttribute("currentUser", userService.get(userId));
-            return "project_view";
+
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                User loggedInUser = userService.findByUsername(((UserDetails)principal).getUsername());
+                model.addAttribute("loggedInUserId", loggedInUser.getId().toString());
+
+                if(userId.equals(loggedInUser.getId())){
+                    return "project_view_owner";
+                }
+                else{
+                    return "project_view_other";
+                }
+
+            } else {
+                model.addAttribute("loggedInUserId", "");
+                return "project_view_other";
+            }
         }
         catch (NotFoundException e) {
             return "/users/{user_id}";
@@ -106,11 +124,24 @@ public class ProjectController {
     }
 
     @GetMapping("/users/{user_id}/projects/{project_id}/delete")
-    public String deleteUser(@PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, RedirectAttributes ra) {
-        service.deleteProjectFromUsersProjects(projectId);
+    public String deleteProject(Model model, @PathVariable("user_id") Integer userId, @PathVariable("project_id") Integer projectId, RedirectAttributes ra) {
         service.delete(projectId);
 
-        ra.addFlashAttribute("message","User has been deleted succesfully");
+        ra.addFlashAttribute("message","Project has been deleted succesfully");
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+
+            User loggedInUser = userService.findByUsername(((UserDetails)principal).getUsername());
+            model.addAttribute("loggedInUserId", loggedInUser.getId().toString());
+
+            if(loggedInUser.getRole().equals("ADMIN")){
+                return "redirect:/projects";
+            }
+        } else {
+            model.addAttribute("loggedInUserId", "");
+        }
         return "redirect:/users/{user_id}";
     }
 

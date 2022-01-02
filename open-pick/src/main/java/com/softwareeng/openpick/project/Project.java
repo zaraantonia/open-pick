@@ -1,5 +1,6 @@
 package com.softwareeng.openpick.project;
 
+import com.softwareeng.openpick.document.Document;
 import com.softwareeng.openpick.task.Task;
 import com.softwareeng.openpick.user.User;
 
@@ -38,7 +39,8 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Task> tasks = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Document> documents = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -80,13 +82,21 @@ public class Project {
         this.description = description;
     }
 
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", owner=" + owner.getUsername() +
+                ", owner=" + owner +
                 '}';
     }
 }

@@ -5,13 +5,13 @@ import com.softwareeng.openpick.exception.NotFoundException;
 import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Controller
@@ -19,10 +19,23 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private ProjectService projectService;
+
     @GetMapping("/users")
     public String showUserList(Model model) {
         List<User> listUsers = service.listAll();
         model.addAttribute("listUsers", listUsers);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            User loggedInUser = service.findByUsername(((UserDetails)principal).getUsername());
+            model.addAttribute("loggedInUserId", loggedInUser.getId().toString());
+            System.out.println(loggedInUser);
+        } else {
+            model.addAttribute("loggedInUserId", "");
+        }
+
         return "users";
     }
 
@@ -34,17 +47,15 @@ public class UserController {
         return "user_form";
     }
 
-  //needs attention
     @PostMapping("/users/save")
     public String saveUser(User user, RedirectAttributes ra) throws UserNotFoundException {
         user.setRole("USER");
-        //User userDB = service.get(user.getId()); //nu am reusit sa fac update:(
         service.save(user);
-        return "redirect:/users";
+        return "redirect:/users/{oldId}";
     }
 
     @RequestMapping(value = "/users/save/{oldId}", method = RequestMethod.POST)
-    public String saveUser(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
+    public String saveUserAgain(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -53,7 +64,7 @@ public class UserController {
         service.save(user);
 
         ra.addFlashAttribute("message", "The user has been saved successfully.");
-        return "redirect:/users";
+        return "redirect:/users/{oldId}";
     }
 
     @GetMapping("/users/edit/{id}")
@@ -66,7 +77,7 @@ public class UserController {
             return "user_form";
         } catch (NotFoundException e) {
             ra.addFlashAttribute("message", "The .");
-            return "redirect:/users";
+            return "redirect:/projects";
         }
     }
 
@@ -112,4 +123,5 @@ public class UserController {
         }
         return "profile";
     }
+
 }

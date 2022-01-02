@@ -1,6 +1,8 @@
 package com.softwareeng.openpick.document;
 
-import com.softwareeng.openpick.user.User;
+import com.softwareeng.openpick.exception.NotFoundException;
+import com.softwareeng.openpick.project.Project;
+import com.softwareeng.openpick.project.ProjectService;
 import com.softwareeng.openpick.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -10,12 +12,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.print.Doc;
-import javax.servlet.Servlet;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +26,9 @@ public class DocumentController {
     @Autowired
     private DocumentRepository repo;
 
+    @Autowired
+    private ProjectService projectService;
+
     @GetMapping("/documents")
     public String showAllDocuments(Model model){
         List<Document> listDocs = repo.findAll();
@@ -35,17 +36,19 @@ public class DocumentController {
         return "documents";
     }
 
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("document") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
+    @PostMapping("/upload/{project_id}")
+    public String uploadFile(@RequestParam("document") MultipartFile multipartFile, @PathVariable("project_id") Integer projectId, RedirectAttributes redirectAttributes) throws IOException {
         String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Document document = new Document();
         document.setContent(multipartFile.getBytes());
         document.setSize(multipartFile.getSize());
         document.setUploadTime(new Date());
         document.setTitle(filename);
-        repo.save(document);
-        redirectAttributes.addFlashAttribute("message","The file has been uploaded successfully.");
-
+        try {
+            document.setProject(projectService.get(projectId));
+            repo.save(document);
+            redirectAttributes.addFlashAttribute("message","The file has been uploaded successfully.");
+        } catch (NotFoundException ignored){}
         return "redirect:/documents";
     }
 

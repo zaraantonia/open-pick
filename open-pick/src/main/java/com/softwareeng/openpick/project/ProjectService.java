@@ -52,7 +52,7 @@ public class ProjectService {
         repo.delete(repo.getById(id));
     }
 
-    public void deleteProjectFromUsersProjects(Integer projectId) {
-        repo.deleteProjectsFromUserProjects(projectId);
+    public List<Project> findAll() {
+        return repo.findAll();
     }
 }

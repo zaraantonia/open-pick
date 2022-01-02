@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Projects</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+</head>
+<body style="background: url(/images/blurry.jpg);
+    background-size: cover;
+    background-repeat: no-repeat">
+
+<!-- header -->
+<div class="header">
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>OPEN<span>PICK</span></h1>
+        </div>
+
+        <ul class="navigation">
+            <a href="/projects/"><li>Projects</li></a>
+            <a th:href="@{'/users/' + ${loggedInUserId}}"><li>My Profile</li></a>
+            <a href="/about"><li>About</li></a>
+            <a href="/logout"><li>Logout</li></a>
+        </ul>
+
+    </div>
+</div>
+
+<div style="color: white">.</div>
+
+
+<div class="container-fluid text-center">
+    <div><h2 style="color: white">Find your next project</h2></div>
+
+    <div>
+        <h3 class="text-success">
+            [[${message}]]
+        </h3>
+    </div>
+
+    <div class = "row border rounded m-3 p-3">
+        <th:block th:each = "proj : ${allProjects}">
+            <div class = "col">
+                <div>
+                    <img th:src="@{/images/project_icon.png}" width="50"/>
+                </div>
+                <div>
+                    <a th:href="@{'/users/'+ ${proj.owner.id} + '/projects/' + ${proj.id}} "style="color:white">[[${proj.title}]]</a>
+                </div>
+                <div>
+                    <a th:href="@{'/users/' + ${proj.owner.id} + '/projects/' + ${proj.id} + '/delete'}" style="color:mediumpurple" >Delete</a>
+                </div>
+            </div>
+        </th:block>
+    </div>
+
+</div>
+</body>
+</html>

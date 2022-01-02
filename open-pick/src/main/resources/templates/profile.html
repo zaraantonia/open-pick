@@ -3,9 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Manage Users</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 </head>
 <body>
+
+<!-- header -->
+<div class="header">
+    <div class="inner_header">
+        <div class="logo_container">
+            <h1>OPEN<span>PICK</span></h1>
+        </div>
+
+        <ul class="navigation">
+            <a href="/projects/"><li>Projects</li></a>
+            <a th:href="@{'/users/' + ${currentUser.id}}"><li>My Profile</li></a>
+            <a href="/about"><li>About</li></a>
+            <a href="/logout"><li>Logout</li></a>
+        </ul>
+
+    </div>
+</div>
+
+<div style="color: white">.</div>
+
 <div class="container-fluid text-center">
 
     <!--succesful pop up -->
@@ -19,6 +40,10 @@
 
     <div>
         <h4>[[${currentUser.email}]]</h4>
+    </div>
+
+    <div>
+    <a class="h4 mr-3" th:href="@{'/users/edit/' + ${currentUser.id}}">Edit</a>
     </div>
 
     <div class="m-2">
@@ -44,13 +69,9 @@
                     <td>[[${project.title}]]</td>
                     <td>[[${project.description}]]</td>
                     <td>
-                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id}}" >Details</a>
-                    </td>
-                    <td>
-                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/delete'}" >Delete</a>
-                    </td>
-                    <td>
-                        <a clas="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/edit'}" >Edit</a>
+                        <a class="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id}}" >Details</a>
+                        <a class="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/delete'}" >Delete</a>
+                        <a class="h4 mr-3" th:href="@{'/users/' + ${currentUser.id} + '/projects/' + ${project.id} + '/edit'}" >Edit</a>
                     </td>
                 </tr>
             </th:block>

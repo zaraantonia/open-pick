@@ -27,14 +27,6 @@ public class Task {
     @Column(name = "description", length = 255)
     private String description;
 
-//    @ManyToOne
-//    @JoinColumn(name = "assigner_id", referencedColumnName = "id")
-//    private User assigner;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
-//    private User assignee;
-
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
