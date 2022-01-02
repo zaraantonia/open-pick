@@ -22,10 +22,16 @@
                     <img th:src="@{/images/document.png}" width="50"/>
                 </div>
                 <div>
-                    <a th:href="@{'/download?id='+ ${doc.id}}">[[${doc.title}]]</a>
+                    <a th:href="@{'/download?id='+ ${doc.id}} "style="color:purple">[[${doc.title}]]</a>
                 </div>
                 <div>
                     ([[${#numbers.formatInteger(doc.size,4,'COMMA')}]] bytes)
+                </div>
+                <div>
+                    <a th:href="@{'/edit/'  + ${doc.id} }" style="color:rebeccapurple" >edit</a>
+                </div>
+                <div>
+                    <a th:href="@{'/delete/'  + ${doc.id}} " style="color:mediumpurple" >delete</a>
                 </div>
 
 

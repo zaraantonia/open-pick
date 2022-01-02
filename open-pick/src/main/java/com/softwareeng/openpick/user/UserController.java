@@ -45,8 +45,9 @@ public class UserController {
 
     @RequestMapping(value = "/users/save/{oldId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("oldId") String oldId, Model model, User user, RedirectAttributes ra) {
-        System.out.println("USERNAME " + user.getUsername());
-        System.out.println("OLD ID" + Integer.parseInt(oldId));
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         user.setId(Integer.parseInt(oldId));
         user.setRole("USER");
         service.save(user);
