@@ -1,13 +1,10 @@
 package com.softwareeng.openpick.user;
 
 import com.softwareeng.openpick.exception.NotFoundException;
-import com.softwareeng.openpick.project.Project;
-import com.softwareeng.openpick.project.ProjectRepository;
 import com.softwareeng.openpick.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +28,6 @@ public class UserService {
         Optional<User> result = repo.findById(id);
         if (result.isPresent()) {
             User currentUser = result.get();
-            //List<Project> currentProjects =  projectService.getByUserId(currentUser.getId());
-            //currentUser.setProjects(currentProjects);
             return currentUser;
         }
         throw new NotFoundException("Could not find any users with ID " + id);

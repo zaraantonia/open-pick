@@ -1,7 +1,6 @@
 package com.softwareeng.openpick.task;
 
 import com.softwareeng.openpick.exception.NotFoundException;
-import com.softwareeng.openpick.project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

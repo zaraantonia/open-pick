@@ -2,6 +2,7 @@ package com.softwareeng.openpick;
 
 import com.softwareeng.openpick.document.Document;
 import com.softwareeng.openpick.document.DocumentRepository;
+import com.softwareeng.openpick.project.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -28,7 +29,7 @@ public class DocumentRepositoryTests {
     @Test
     @Rollback(false)
     void testInsertProject() throws IOException {
-        File file = new File("C:\\Users\\Doroteea\\Downloads\\WebSecurityConfig.java");
+        File file = new File("C:\\Users\\Antonia\\Desktop\\constraints.xdc");
         Document document = new Document();
         document.setTitle(file.getName());
 
@@ -42,6 +43,5 @@ public class DocumentRepositoryTests {
         Document existDoc = entityManager.find(Document.class,savedDoc.getId());
 
         assertThat(existDoc.getSize()).isEqualTo(fileSize);
-
     }
 }

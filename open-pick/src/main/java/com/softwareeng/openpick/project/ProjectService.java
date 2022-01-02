@@ -18,22 +18,12 @@ public class ProjectService {
     @Autowired
     private ProjectRepository repo;
 
-
-    public List<Project> getByUserId(Integer id) {
-        List<Project> projects = (List)repo.findAllById(repo.findProjectsIdByUserId(id));
-        return projects;
-    }
-
     public Project get(Integer projectId) throws NotFoundException {
         Optional<Project> result = repo.findById(projectId);
         if (result.isPresent()){
             return result.get();
         }
         throw new NotFoundException("Could not find any projects with ID " + projectId);
-    }
-
-    public void updateUserIdInUsersProjects(Integer oldId, Integer newId) {
-        repo.updateUserId(oldId, newId);
     }
 
     public void updateUserIdInProject(Integer oldId, Integer newId) {

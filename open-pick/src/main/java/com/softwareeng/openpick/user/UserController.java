@@ -2,7 +2,6 @@ package com.softwareeng.openpick.user;
 
 
 import com.softwareeng.openpick.exception.NotFoundException;
-import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

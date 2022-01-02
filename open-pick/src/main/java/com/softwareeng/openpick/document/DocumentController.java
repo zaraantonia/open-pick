@@ -1,7 +1,6 @@
 package com.softwareeng.openpick.document;
 
 import com.softwareeng.openpick.exception.NotFoundException;
-import com.softwareeng.openpick.project.Project;
 import com.softwareeng.openpick.project.ProjectService;
 import com.softwareeng.openpick.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
