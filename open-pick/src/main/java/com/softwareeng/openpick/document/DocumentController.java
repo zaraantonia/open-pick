@@ -49,7 +49,7 @@ public class DocumentController {
             repo.save(document);
             redirectAttributes.addFlashAttribute("message","The file has been uploaded successfully.");
         } catch (NotFoundException ignored){}
-        return "redirect:/documents";
+        return "redirect:/projects";
     }
 
     @GetMapping("/download")
@@ -79,7 +79,7 @@ public class DocumentController {
         }
         repo.deleteById(id);
         ra.addFlashAttribute("message","File has been deleted succesfully");
-        return "redirect:/documents";
+        return "redirect:/projects";
     }
 
     @RequestMapping(value = "/uploadEdit/{oldId}", method = RequestMethod.POST)
@@ -97,10 +97,10 @@ public class DocumentController {
             document.setTitle(filename);
             repo.save(document);
             redirectAttributes.addFlashAttribute("message","The file has been edited successfully.");
-            return "redirect:/documents";
+            return "redirect:/projects";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "The .");
-            return "redirect:/documents";
+            return "redirect:/projects";
         }
     }
 
